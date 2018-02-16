@@ -58,6 +58,20 @@ var testComment = Comment{
 	},
 }
 
+var testTeam = Team{
+	Id:     "increments",
+	Active: true,
+	Name:   "Increments Inc.",
+}
+
+var testTeamJson = []byte(`
+{
+  "active": true,
+  "id": "increments",
+  "name": "Increments Inc."
+}
+`)
+
 var testPostsJson = []byte(`
 [
   {
@@ -138,8 +152,8 @@ var testPosts = Posts{
 		LikesCount:     100,
 		Private:        false,
 		ReactionsCount: 100,
-		Tags: PostTags{
-			PostTag{
+		Tags: Taggings{
+			Tagging{
 				Name: "Ruby",
 				Versions: []string{
 					"0.0.1",
@@ -172,17 +186,14 @@ var testPosts = Posts{
 }
 
 func TestUnmarshalPosts(t *testing.T) {
-
 	ps := Posts{}
 	err := json.Unmarshal(testPostsJson, &ps)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	if !PostValueEqual(&testPosts[0], &ps[0]) {
 		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testPosts, ps)
 	}
-
 }
 
 func TestUnmarshalComment(t *testing.T) {
@@ -191,9 +202,18 @@ func TestUnmarshalComment(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	if !CommentValueEqual(&testComment, &c) {
 		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testComment, c)
 	}
+}
 
+func TestUnmarshalTeam(t *testing.T) {
+	team := Team{}
+	err := json.Unmarshal(testTeamJson, &team)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if testTeam != team {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testTeam, team)
+	}
 }
