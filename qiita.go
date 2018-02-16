@@ -25,13 +25,15 @@ type Post struct {
 	LikesCount     int       `json:"likes_count"`
 	Private        bool      `json:"private"`
 	ReactionsCount int       `json:"reactions_count"`
-	Tags           PostTags  `json:"tags"`
+	Tags           Taggings  `json:"tags"`
 	Title          string    `json:"title"`
 	UpdatedAt      time.Time `json:"updated_at"`
 	Url            string    `json:"url"`
 	User           User      `json:"user"`
 	PageViewsCount *int      `json:"page_views_count"`
 }
+
+type Posts []Post
 
 type User struct {
 	Id                string  `json:"id"`
@@ -51,12 +53,14 @@ type User struct {
 	WebsiteUrl        *string `json:"website_url"`
 }
 
-type PostTag struct {
+type Users []User
+
+type Tagging struct {
 	Name     string   `json:"name"`
 	Versions []string `json:"versions"`
 }
 
-type PostTags []PostTag
+type Taggings []Tagging
 
 type Tag struct {
 	Id             string  `json:"id"`
@@ -64,6 +68,8 @@ type Tag struct {
 	IconUrl        *string `json:"icon_url"` //for null
 	ItemsCount     int     `json:"items_count"`
 }
+
+type Tags []Tag
 
 type Group struct {
 	Id        int       `json:"id"`
@@ -74,9 +80,13 @@ type Group struct {
 	UrlName   string    `json:"url_name"`
 }
 
-type Tags []Tag
+type Team struct {
+	Id     string `json:"id"`
+	Active bool   `json:"active"`
+	Name   string `json:"name"`
+}
 
-type Posts []Post
+type Teams []Team
 
 func UserValueEqual(u1 *User, u2 *User) bool {
 	return u1.Id == u2.Id &&
