@@ -1,4 +1,4 @@
-# qiitago
+# qiitago [![Build Status](https://travis-ci.org/ynishi/qiitago.svg?branch=master)](https://travis-ci.org/ynishi/qiitago)
 Unofficial qiita api converter for go
 * https://qiita.com/api/v2/docs#%E6%8A%95%E7%A8%BF
 * support v2
