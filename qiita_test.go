@@ -2,6 +2,7 @@ package qiitago
 
 import (
 	"encoding/json"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -125,6 +126,51 @@ var testPostsJson = []byte(`
 ]
 `)
 
+var testTemplatesJson = []byte(`
+[
+  {
+    "body": "Weekly MTG on %{Year}/%{month}/%{day}",
+    "id": 1,
+    "name": "Weekly MTG",
+    "expanded_body": "Weekly MTG on 2000/01/01",
+    "expanded_tags": [
+      {
+        "name": "MTG/2000/01/01",
+        "versions": [
+          "0.0.1"
+        ]
+      }
+    ],
+    "expanded_title": "Weekly MTG on 2015/06/03",
+    "tags": [
+      {
+        "name": "MTG/%{Year}/%{month}/%{day}",
+        "versions": [
+          "0.0.1"
+        ]
+      }
+    ],
+    "title": "Weekly MTG on %{Year}/%{month}/%{day}"
+  }
+]
+`)
+
+var testPostTemplateJson = []byte(`
+{
+  "body": "Weekly MTG on %{Year}/%{month}/%{day}",
+  "name": "Weekly MTG",
+  "tags": [
+    {
+      "name": "MTG/%{Year}/%{month}/%{day}",
+      "versions": [
+        "0.0.1"
+      ]
+    }
+  ],
+  "title": "Weekly MTG on %{Year}/%{month}/%{day}"
+}
+`)
+
 var description = "Hello, world."
 var name = "yaotti"
 var location = "Tokyo, Japan"
@@ -185,6 +231,47 @@ var testPosts = Posts{
 	},
 }
 
+var testTemplates = Templates{
+	Template{
+		Id:           1,
+		Body:         "Weekly MTG on %{Year}/%{month}/%{day}",
+		Name:         "Weekly MTG",
+		ExpandedBody: "Weekly MTG on 2000/01/01",
+		ExpandedTags: Taggings{
+			Tagging{
+				Name: "MTG/2000/01/01",
+				Versions: []string{
+					"0.0.1",
+				},
+			},
+		},
+		ExpandedTitle: "Weekly MTG on 2015/06/03",
+		Tags: Taggings{
+			Tagging{
+				Name: "MTG/%{Year}/%{month}/%{day}",
+				Versions: []string{
+					"0.0.1",
+				},
+			},
+		},
+		Title: "Weekly MTG on %{Year}/%{month}/%{day}",
+	},
+}
+
+var testPostTemplate = PostTemplate{
+	Body: "Weekly MTG on %{Year}/%{month}/%{day}",
+	Name: "Weekly MTG",
+	Tags: Taggings{
+		Tagging{
+			Name: "MTG/%{Year}/%{month}/%{day}",
+			Versions: []string{
+				"0.0.1",
+			},
+		},
+	},
+	Title: "Weekly MTG on %{Year}/%{month}/%{day}",
+}
+
 func TestUnmarshalPosts(t *testing.T) {
 	ps := Posts{}
 	err := json.Unmarshal(testPostsJson, &ps)
@@ -215,5 +302,27 @@ func TestUnmarshalTeam(t *testing.T) {
 	}
 	if testTeam != team {
 		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testTeam, team)
+	}
+}
+
+func TestUnmarshalTemplate(t *testing.T) {
+	templates := Templates{}
+	err := json.Unmarshal(testTemplatesJson, &templates)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(testTemplates, templates) {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testTemplates, templates)
+	}
+}
+
+func TestUnmarshalPostTemplate(t *testing.T) {
+	postTemplate := PostTemplate{}
+	err := json.Unmarshal(testPostTemplateJson, &postTemplate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(testPostTemplate, postTemplate) {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testPostTemplate, postTemplate)
 	}
 }

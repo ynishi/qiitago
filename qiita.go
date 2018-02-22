@@ -88,6 +88,26 @@ type Team struct {
 
 type Teams []Team
 
+type Template struct {
+	Id            int      `json:"id"`
+	Body          string   `json:"body"`
+	Name          string   `json:"name"`
+	ExpandedBody  string   `json:"expanded_body"`
+	ExpandedTags  Taggings `json:"expanded_tags"`
+	ExpandedTitle string   `json:"expanded_title"`
+	Tags          Taggings `json:"tags"`
+	Title         string   `json:"title"`
+}
+
+type Templates []Template
+
+type PostTemplate struct {
+	Body  string   `json:"body"`
+	Name  string   `json:"name"`
+	Tags  Taggings `json:"tags"`
+	Title string   `json:"title"`
+}
+
 func UserValueEqual(u1 *User, u2 *User) bool {
 	return u1.Id == u2.Id &&
 		*u1.Description == *u2.Description &&
