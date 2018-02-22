@@ -108,6 +108,26 @@ type PostTemplate struct {
 	Title string   `json:"title"`
 }
 
+type Project struct {
+	Id             int       `json:"id"`
+	RenderedBody   string    `json:"rendered_body"`
+	Archived       bool      `json:"archived"`
+	Body           string    `json:"body"`
+	CreatedAt      time.Time `json:"created_at"`
+	Name           string    `json:"name"`
+	ReactionsCount int       `json:"reactions_count"`
+	UpdatedAt      time.Time `json:"updated_at"`
+}
+
+type Projects []Project
+
+type PostProject struct {
+	Archived       bool      `json:"archived"`
+	Body           string    `json:"body"`
+	Name           string    `json:"name"`
+	Tags  Taggings `json:"tags"`
+}
+
 func UserValueEqual(u1 *User, u2 *User) bool {
 	return u1.Id == u2.Id &&
 		*u1.Description == *u2.Description &&
@@ -157,8 +177,19 @@ func PostValueEqual(p1 *Post, p2 *Post) bool {
 func CommentValueEqual(c1 *Comment, c2 *Comment) bool {
 	return c1.Id == c2.Id &&
 		c1.Body == c2.Body &&
-		c1.CreatedAt.Equal(c1.CreatedAt) &&
+		c1.CreatedAt.Equal(c2.CreatedAt) &&
 		c1.RenderedBody == c2.RenderedBody &&
 		c1.UpdatedAt.Equal(c2.UpdatedAt) &&
 		UserValueEqual(&c1.User, &c2.User)
+}
+
+func ProjectValueEqal(p1 *Project, p2 *Project) bool {
+	return p1.Id == p2.Id &&
+		p1.RenderedBody == p2.RenderedBody &&
+		p1.Archived == p2.Archived &&
+		p1.Body == p2.Body &&
+		p1.CreatedAt.Equal(p2.CreatedAt) &&
+		p1.Name == p2.Name &&
+		p1.ReactionsCount == p2.ReactionsCount &&
+		p1.UpdatedAt.Equal(p2.UpdatedAt)
 }
