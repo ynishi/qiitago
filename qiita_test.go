@@ -243,6 +243,29 @@ var testReactionsJson = []byte(`
   }
 ]`)
 
+var testAuthenticatedUserJson = []byte(`
+{
+  "description": "Hello, world.",
+  "facebook_id": "yaotti",
+  "followees_count": 100,
+  "followers_count": 200,
+  "github_login_name": "yaotti",
+  "id": "yaotti",
+  "items_count": 300,
+  "linkedin_id": "yaotti",
+  "location": "Tokyo, Japan",
+  "name": "Hiroshige Umino",
+  "organization": "Increments Inc",
+  "permanent_id": 1,
+  "profile_image_url": "https://si0.twimg.com/profile_images/2309761038/1ijg13pfs0dg84sk2y0h_normal.jpeg",
+  "twitter_screen_name": "yaotti",
+  "website_url": "http://yaotti.hatenablog.com",
+  "image_monthly_upload_limit": 1048576,
+  "image_monthly_upload_remaining": 524288,
+  "team_only": false
+}
+`)
+
 var description = "Hello, world."
 var name = "yaotti"
 var location = "Tokyo, Japan"
@@ -409,6 +432,27 @@ var testReactions = Reactions{
 	},
 }
 
+var testAuthenticatedUser = AuthenticatedUser{
+	Id:                          "yaotti",
+	Description:                 &description,
+	FacebookId:                  &name,
+	FolloweesCount:              100,
+	FollowersCount:              200,
+	GithubLoginName:             &name,
+	ItemsCount:                  300,
+	LinkedinId:                  &name,
+	Location:                    &location,
+	Name:                        &longName,
+	Organization:                &organization,
+	PermanentId:                 1,
+	ProfileImageUrl:             "https://si0.twimg.com/profile_images/2309761038/1ijg13pfs0dg84sk2y0h_normal.jpeg",
+	TwitterScreenName:           &name,
+	WebsiteUrl:                  &websiteUrl,
+	ImageMonthlyUploadLimit:     1048576,
+	ImageMonthlyUploadRemaining: 524288,
+	TeamOnly:                    false,
+}
+
 func TestUnmarshalPosts(t *testing.T) {
 	ps := Posts{}
 	err := json.Unmarshal(testPostsJson, &ps)
@@ -497,7 +541,7 @@ func TestUnmarshalExpandedTemplate(t *testing.T) {
 	}
 }
 
-func TestUnmarshalReaction(t *testing.T) {
+func TestUnmarshalReactions(t *testing.T) {
 	reactions := Reactions{}
 	err := json.Unmarshal(testReactionsJson, &reactions)
 	if err != nil {
@@ -505,5 +549,16 @@ func TestUnmarshalReaction(t *testing.T) {
 	}
 	if !ReactionValueEqual(&testReactions[0], &reactions[0]) {
 		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testReactions, reactions)
+	}
+}
+
+func TestUnmarshalAuthenticatedUser(t *testing.T) {
+	authenticatedUser := AuthenticatedUser{}
+	err := json.Unmarshal(testAuthenticatedUserJson, &authenticatedUser)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !AuthenticatedUserValueEqual(&testAuthenticatedUser, &authenticatedUser) {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testAuthenticatedUser, authenticatedUser)
 	}
 }

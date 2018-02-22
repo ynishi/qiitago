@@ -145,6 +145,27 @@ type ReactionName string
 
 type Reactions []Reaction
 
+type AuthenticatedUser struct {
+	Id                          string  `json:"id"`
+	Description                 *string `json:"description"`
+	FacebookId                  *string `json:"facebook_id"`
+	FolloweesCount              int     `json:"followees_count"`
+	FollowersCount              int     `json:"followers_count"`
+	GithubLoginName             *string `json:"github_login_name"`
+	ItemsCount                  int     `json:"items_count"`
+	LinkedinId                  *string `json:"linkedin_id"`
+	Location                    *string `json:"location"`
+	Name                        *string `json:"name"`
+	Organization                *string `json:"organization"`
+	PermanentId                 int     `json:"permanent_id"`
+	ProfileImageUrl             string  `json:"profile_image_url"`
+	TwitterScreenName           *string `json:"twitter_screen_name"`
+	WebsiteUrl                  *string `json:"website_url"`
+	ImageMonthlyUploadLimit     int     `json:"image_monthly_upload_limit"`
+	ImageMonthlyUploadRemaining int     `json:"image_monthly_upload_remaining"`
+	TeamOnly                    bool    `json:"team_only"`
+}
+
 func UserValueEqual(u1 *User, u2 *User) bool {
 	return u1.Id == u2.Id &&
 		*u1.Description == *u2.Description &&
@@ -216,4 +237,25 @@ func ReactionValueEqual(r1 *Reaction, r2 *Reaction) bool {
 		r1.ImageUrl == r2.ImageUrl &&
 		r1.Name == r2.Name &&
 		UserValueEqual(&r1.User, &r2.User)
+}
+
+func AuthenticatedUserValueEqual(u1 *AuthenticatedUser, u2 *AuthenticatedUser) bool {
+	return u1.Id == u2.Id &&
+		*u1.Description == *u2.Description &&
+		*u1.FacebookId == *u2.FacebookId &&
+		u1.FolloweesCount == u2.FolloweesCount &&
+		u1.FollowersCount == u2.FollowersCount &&
+		*u1.GithubLoginName == *u2.GithubLoginName &&
+		u1.ItemsCount == u2.ItemsCount &&
+		*u1.LinkedinId == *u2.LinkedinId &&
+		*u1.Location == *u2.Location &&
+		*u1.Name == *u2.Name &&
+		*u1.Organization == *u2.Organization &&
+		u1.PermanentId == u2.PermanentId &&
+		u1.ProfileImageUrl == u2.ProfileImageUrl &&
+		*u1.TwitterScreenName == *u2.TwitterScreenName &&
+		*u1.WebsiteUrl == *u2.WebsiteUrl &&
+		u1.ImageMonthlyUploadLimit == u2.ImageMonthlyUploadLimit &&
+		u1.ImageMonthlyUploadRemaining == u2.ImageMonthlyUploadRemaining &&
+		u1.TeamOnly == u1.TeamOnly
 }
