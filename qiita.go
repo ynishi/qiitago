@@ -122,10 +122,16 @@ type Project struct {
 type Projects []Project
 
 type PostProject struct {
-	Archived       bool      `json:"archived"`
-	Body           string    `json:"body"`
-	Name           string    `json:"name"`
+	Archived bool     `json:"archived"`
+	Body     string   `json:"body"`
+	Name     string   `json:"name"`
+	Tags     Taggings `json:"tags"`
+}
+
+type ExpandedTemplate struct {
+	Body  string   `json:"body"`
 	Tags  Taggings `json:"tags"`
+	Title string   `json:"title"`
 }
 
 func UserValueEqual(u1 *User, u2 *User) bool {
@@ -183,7 +189,7 @@ func CommentValueEqual(c1 *Comment, c2 *Comment) bool {
 		UserValueEqual(&c1.User, &c2.User)
 }
 
-func ProjectValueEqal(p1 *Project, p2 *Project) bool {
+func ProjectValueEqual(p1 *Project, p2 *Project) bool {
 	return p1.Id == p2.Id &&
 		p1.RenderedBody == p2.RenderedBody &&
 		p1.Archived == p2.Archived &&
