@@ -202,6 +202,21 @@ var testPostProjectJson = []byte(`
 }
 `)
 
+var testExpandedTemplateJson = []byte(`
+{
+  "body": "Weekly MTG on %{Year}/%{month}/%{day}",
+  "tags": [
+    {
+      "name": "MTG/%{Year}/%{month}/%{day}",
+      "versions": [
+        "0.0.1"
+      ]
+    }
+  ],
+  "title": "Weekly MTG on %{Year}/%{month}/%{day}"
+}
+`)
+
 var description = "Hello, world."
 var name = "yaotti"
 var location = "Tokyo, Japan"
@@ -317,7 +332,6 @@ var testProjects = Projects{
 }
 
 var testPostProject = PostProject{
-
 	Archived: false,
 	Body:     "# Example",
 	Name:     "Kobiro Project",
@@ -329,6 +343,19 @@ var testPostProject = PostProject{
 			},
 		},
 	},
+}
+
+var testExpandedTemplate = ExpandedTemplate{
+	Body: "Weekly MTG on %{Year}/%{month}/%{day}",
+	Tags: Taggings{
+		Tagging{
+			Name: "MTG/%{Year}/%{month}/%{day}",
+			Versions: []string{
+				"0.0.1",
+			},
+		},
+	},
+	Title: "Weekly MTG on %{Year}/%{month}/%{day}",
 }
 
 func TestUnmarshalPosts(t *testing.T) {
@@ -392,7 +419,7 @@ func TestUnmarshalProjects(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !ProjectValueEqal(&testProjects[0], &projects[0]) {
+	if !ProjectValueEqual(&testProjects[0], &projects[0]) {
 		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testProjects[0], projects[0])
 	}
 }
@@ -408,3 +435,13 @@ func TestUnmarshalPostProject(t *testing.T) {
 	}
 }
 
+func TestUnmarshalExpandedTemplate(t *testing.T) {
+	expandedTemplate := ExpandedTemplate{}
+	err := json.Unmarshal(testExpandedTemplateJson, &expandedTemplate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(testExpandedTemplate, expandedTemplate) {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testExpandedTemplate, expandedTemplate)
+	}
+}
