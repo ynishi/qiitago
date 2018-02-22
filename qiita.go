@@ -135,11 +135,13 @@ type ExpandedTemplate struct {
 }
 
 type Reaction struct {
-	CreatedAt time.Time `json:"created_at"`
-	ImageUrl  string    `json:"image_url"`
-	Name      string    `json:"name"`
-	User      User      `json:"user"`
+	CreatedAt time.Time    `json:"created_at"`
+	ImageUrl  string       `json:"image_url"`
+	Name      ReactionName `json:"name"`
+	User      User         `json:"user"`
 }
+
+type ReactionName string
 
 func UserValueEqual(u1 *User, u2 *User) bool {
 	return u1.Id == u2.Id &&
