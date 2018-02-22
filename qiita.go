@@ -134,6 +134,13 @@ type ExpandedTemplate struct {
 	Title string   `json:"title"`
 }
 
+type Reaction struct {
+	CreatedAt time.Time `json:"created_at"`
+	ImageUrl  string    `json:"image_url"`
+	Name      string    `json:"name"`
+	User      User      `json:"user"`
+}
+
 func UserValueEqual(u1 *User, u2 *User) bool {
 	return u1.Id == u2.Id &&
 		*u1.Description == *u2.Description &&
@@ -198,4 +205,11 @@ func ProjectValueEqual(p1 *Project, p2 *Project) bool {
 		p1.Name == p2.Name &&
 		p1.ReactionsCount == p2.ReactionsCount &&
 		p1.UpdatedAt.Equal(p2.UpdatedAt)
+}
+
+func ReactionValueEqual(r1 *Reaction, r2 *Reaction) bool {
+	return r1.CreatedAt.Equal(r2.CreatedAt) &&
+		r1.ImageUrl == r2.ImageUrl &&
+		r1.Name == r2.Name &&
+		UserValueEqual(&r1.User, &r2.User)
 }

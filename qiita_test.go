@@ -217,6 +217,31 @@ var testExpandedTemplateJson = []byte(`
 }
 `)
 
+var testReactionJson = []byte(`
+{
+  "created_at": "2000-01-01T00:00:00+00:00",
+  "image_url": "https://cdn.qiita.com/emoji/twemoji/unicode/1f44d.png",
+  "name": "+1",
+  "user": {
+    "description": "Hello, world.",
+    "facebook_id": "yaotti",
+    "followees_count": 100,
+    "followers_count": 200,
+    "github_login_name": "yaotti",
+    "id": "yaotti",
+    "items_count": 300,
+    "linkedin_id": "yaotti",
+    "location": "Tokyo, Japan",
+    "name": "Hiroshige Umino",
+    "organization": "Increments Inc",
+    "permanent_id": 1,
+    "profile_image_url": "https://si0.twimg.com/profile_images/2309761038/1ijg13pfs0dg84sk2y0h_normal.jpeg",
+    "twitter_screen_name": "yaotti",
+    "website_url": "http://yaotti.hatenablog.com"
+  }
+}
+`)
+
 var description = "Hello, world."
 var name = "yaotti"
 var location = "Tokyo, Japan"
@@ -358,6 +383,29 @@ var testExpandedTemplate = ExpandedTemplate{
 	Title: "Weekly MTG on %{Year}/%{month}/%{day}",
 }
 
+var testReaction = Reaction{
+	CreatedAt: time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
+	ImageUrl:  "https://cdn.qiita.com/emoji/twemoji/unicode/1f44d.png",
+	Name:      "+1",
+	User: User{
+		Id:                "yaotti",
+		Description:       &description,
+		FacebookId:        &name,
+		FolloweesCount:    100,
+		FollowersCount:    200,
+		GithubLoginName:   &name,
+		ItemsCount:        300,
+		LinkedinId:        &name,
+		Location:          &location,
+		Name:              &longName,
+		Organization:      &organization,
+		PermanentId:       1,
+		ProfileImageUrl:   "https://si0.twimg.com/profile_images/2309761038/1ijg13pfs0dg84sk2y0h_normal.jpeg",
+		TwitterScreenName: &name,
+		WebsiteUrl:        &websiteUrl,
+	},
+}
+
 func TestUnmarshalPosts(t *testing.T) {
 	ps := Posts{}
 	err := json.Unmarshal(testPostsJson, &ps)
@@ -443,5 +491,16 @@ func TestUnmarshalExpandedTemplate(t *testing.T) {
 	}
 	if !reflect.DeepEqual(testExpandedTemplate, expandedTemplate) {
 		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testExpandedTemplate, expandedTemplate)
+	}
+}
+
+func TestUnmarshalReaction(t *testing.T) {
+	reaction := Reaction{}
+	err := json.Unmarshal(testReactionJson, &reaction)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !ReactionValueEqual(&testReaction, &reaction) {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testReaction, reaction)
 	}
 }
