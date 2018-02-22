@@ -143,6 +143,8 @@ type Reaction struct {
 
 type ReactionName string
 
+type Reactions []Reaction
+
 func UserValueEqual(u1 *User, u2 *User) bool {
 	return u1.Id == u2.Id &&
 		*u1.Description == *u2.Description &&
