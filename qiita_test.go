@@ -2,9 +2,9 @@ package qiitago
 
 import (
 	"encoding/json"
+	"reflect"
 	"testing"
 	"time"
-	"reflect"
 )
 
 var testCommentJson = []byte(`
@@ -155,6 +155,22 @@ var testTemplatesJson = []byte(`
 ]
 `)
 
+var testPostTemplateJson = []byte(`
+{
+  "body": "Weekly MTG on %{Year}/%{month}/%{day}",
+  "name": "Weekly MTG",
+  "tags": [
+    {
+      "name": "MTG/%{Year}/%{month}/%{day}",
+      "versions": [
+        "0.0.1"
+      ]
+    }
+  ],
+  "title": "Weekly MTG on %{Year}/%{month}/%{day}"
+}
+`)
+
 var description = "Hello, world."
 var name = "yaotti"
 var location = "Tokyo, Japan"
@@ -217,9 +233,9 @@ var testPosts = Posts{
 
 var testTemplates = Templates{
 	Template{
-		Id:          1,
-		Body:        "Weekly MTG on %{Year}/%{month}/%{day}",
-		Name:        "Weekly MTG",
+		Id:           1,
+		Body:         "Weekly MTG on %{Year}/%{month}/%{day}",
+		Name:         "Weekly MTG",
 		ExpandedBody: "Weekly MTG on 2000/01/01",
 		ExpandedTags: Taggings{
 			Tagging{
@@ -240,6 +256,20 @@ var testTemplates = Templates{
 		},
 		Title: "Weekly MTG on %{Year}/%{month}/%{day}",
 	},
+}
+
+var testPostTemplate = PostTemplate{
+	Body: "Weekly MTG on %{Year}/%{month}/%{day}",
+	Name: "Weekly MTG",
+	Tags: Taggings{
+		Tagging{
+			Name: "MTG/%{Year}/%{month}/%{day}",
+			Versions: []string{
+				"0.0.1",
+			},
+		},
+	},
+	Title: "Weekly MTG on %{Year}/%{month}/%{day}",
 }
 
 func TestUnmarshalPosts(t *testing.T) {
@@ -283,5 +313,16 @@ func TestUnmarshalTemplate(t *testing.T) {
 	}
 	if !reflect.DeepEqual(testTemplates, templates) {
 		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testTemplates, templates)
+	}
+}
+
+func TestUnmarshalPostTemplate(t *testing.T) {
+	postTemplate := PostTemplate{}
+	err := json.Unmarshal(testPostTemplateJson, &postTemplate)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(testPostTemplate, postTemplate) {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testPostTemplate, postTemplate)
 	}
 }
