@@ -171,6 +171,37 @@ var testPostTemplateJson = []byte(`
 }
 `)
 
+var testProjectsJson = []byte(`
+[
+  {
+    "rendered_body": "<h1>Example</h1>",
+    "archived": false,
+    "body": "# Example",
+    "created_at": "2000-01-01T00:00:00+00:00",
+    "id": 1,
+    "name": "Kobiro Project",
+    "reactions_count": 100,
+    "updated_at": "2000-01-01T00:00:00+00:00"
+  }
+]
+`)
+
+var testPostProjectJson = []byte(`
+{
+  "archived": false,
+  "body": "# Example",
+  "name": "Kobiro Project",
+  "tags": [
+    {
+      "name": "Ruby",
+      "versions": [
+        "0.0.1"
+      ]
+    }
+  ]
+}
+`)
+
 var description = "Hello, world."
 var name = "yaotti"
 var location = "Tokyo, Japan"
@@ -272,6 +303,34 @@ var testPostTemplate = PostTemplate{
 	Title: "Weekly MTG on %{Year}/%{month}/%{day}",
 }
 
+var testProjects = Projects{
+	Project{
+		Id:             1,
+		RenderedBody:   "<h1>Example</h1>",
+		Archived:       false,
+		Body:           "# Example",
+		CreatedAt:      time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
+		Name:           "Kobiro Project",
+		ReactionsCount: 100,
+		UpdatedAt:      time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
+	},
+}
+
+var testPostProject = PostProject{
+
+	Archived: false,
+	Body:     "# Example",
+	Name:     "Kobiro Project",
+	Tags: Taggings{
+		Tagging{
+			Name: "Ruby",
+			Versions: []string{
+				"0.0.1",
+			},
+		},
+	},
+}
+
 func TestUnmarshalPosts(t *testing.T) {
 	ps := Posts{}
 	err := json.Unmarshal(testPostsJson, &ps)
@@ -326,3 +385,26 @@ func TestUnmarshalPostTemplate(t *testing.T) {
 		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testPostTemplate, postTemplate)
 	}
 }
+
+func TestUnmarshalProjects(t *testing.T) {
+	projects := Projects{}
+	err := json.Unmarshal(testProjectsJson, &projects)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !ProjectValueEqal(&testProjects[0], &projects[0]) {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testProjects[0], projects[0])
+	}
+}
+
+func TestUnmarshalPostProject(t *testing.T) {
+	postProject := PostProject{}
+	err := json.Unmarshal(testPostProjectJson, &postProject)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(testPostProject, postProject) {
+		t.Fatalf("Unmarshaled not matched.\nwant: %v\nhave: %v\n", testPostProject, postProject)
+	}
+}
+
